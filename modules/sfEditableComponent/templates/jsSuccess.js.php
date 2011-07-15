@@ -24,7 +24,7 @@ $(document).ready(function(){
       ['Maximize',  'ShowBlocks']
     ]
   };
-  
+
   // Local methods
   var cleanRichEditor = function() {
     // Removes every CKEditor opened instance
@@ -33,19 +33,19 @@ $(document).ready(function(){
     }
     return true;
   };
-  
+
   var openRichEditor = function() {
     cleanRichEditor();
     CKEDITOR.replace('sfEditableComponentTextarea', CKConfig);
     return true;
   };
-  
+
   // Facebox settings
   $.facebox.settings.opacity = 0.4;
   $.facebox.settings.loadingImage = pluginWebRoot + '/facebox/loading.gif';
   $.facebox.settings.closeImage   = pluginWebRoot + '/facebox/closelabel.gif';
   $(this).bind('close.facebox', cleanRichEditor);
-  
+
   // Components behaviors
   // Empty content check
   $('.' + componentCssClassName).each(function(){
@@ -53,7 +53,7 @@ $(document).ready(function(){
       $(this).html(defaultContent);
     }
   });
-  
+
   // Link deactivation
   $('.' + componentCssClassName + ' a').click(function() {
     if (confirm('Open link in a new window?')) {
@@ -61,7 +61,7 @@ $(document).ready(function(){
     }
     return false;
   });
-  
+
   // Editing mode trigger
   $('.' + componentCssClassName).dblclick(function() {
     var component = $(this);
@@ -80,8 +80,9 @@ $(document).ready(function(){
         }
         var formHtml = '<form action="' + updateServiceUrl + '" method="post" id="sfEditableComponentForm">'
           + '<h2>Edit ' + $(component).attr('id') + ' (' + type + ')</h2>'
+          + '<input type="text" name="title" id="sfEditableComponentTitle" value="' + result.title + '" />'
           + (!useRichEditor ? tagInfo[0] : '')
-          + '<p><textarea name="value" id="sfEditableComponentTextarea">' + result.result + '</textarea></p>'
+          + '<p><textarea name="value" id="sfEditableComponentTextarea">' + result.content + '</textarea></p>'
           + (!useRichEditor ? tagInfo[1] : '')
           + '<input type="hidden" value="' + $(component).attr('id') + '" name="id" id="sfEditableComponentId"/>'
           + '<input type="hidden" value="' + type + '" name="type" id="sfEditableComponentType"/>'
@@ -103,7 +104,7 @@ $(document).ready(function(){
       }, 'json');
     });
   });
-  
+
   // Component contents update form
   $('#sfEditableComponentForm').live('submit', function(data){
     var form = $(this);
@@ -119,5 +120,5 @@ $(document).ready(function(){
       return false;
     }, 'json');
     return false;
-  });  
+  });
 });
